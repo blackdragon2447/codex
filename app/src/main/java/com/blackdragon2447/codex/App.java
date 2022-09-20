@@ -3,12 +3,15 @@
  */
 package com.blackdragon2447.codex;
 
+import java.util.logging.Level;
+
+import com.blackdragon2447.codex.util.CodexLogger;
+
 public class App {
-    public String getGreeting() {
-        return "No World!";
-    }
 
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+      CodexLogger.log("Starting Codex", Level.INFO);
+    
+
     }
 }
