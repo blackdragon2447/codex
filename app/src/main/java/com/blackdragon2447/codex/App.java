@@ -5,7 +5,7 @@ package com.blackdragon2447.codex;
 
 public class App {
     public String getGreeting() {
-        return "Hello World!";
+        return "no World!";
     }
 
     public static void main(String[] args) {
