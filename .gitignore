@@ -6,6 +6,7 @@ build
 
 .project
 .settings
+.idea/
 
 app/bin/
 app/build/
