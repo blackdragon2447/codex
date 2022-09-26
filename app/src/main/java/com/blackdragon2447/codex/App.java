@@ -11,4 +11,5 @@ public class App {
   public static void main(String[] args) {
     CodexLogger.log("Starting Codex", Level.INFO);
   }
+  Boolean Logic = true;
 }
