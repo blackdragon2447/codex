@@ -18,6 +18,8 @@ repositories {
 
 dependencies {
   implementation 'com.formdev:flatlaf:2.4'
+  implementation 'net.harawata:appdirs:1.2.1'
+  implementation 'com.h2database:h2:2.1.214'
 }
 
 application {
