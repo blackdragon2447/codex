@@ -7,10 +7,12 @@ import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JTabbedPane;
 import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -68,6 +70,19 @@ public class CodexGui extends JFrame {
 
     add(fillerButton, c);
 
+    JButton characterCreatorButton = new JButton("Character Creator");
+    c.gridx = 3;
+    c.gridy = 2;
+
+    JTabbedPane paneTab = new JTabbedPane();
+    JComponent panel1 = makeTextPanel("Panel #1");
+
+    add(characterCreatorButton, c);
+
     setVisible(true);
+  }
+
+  private JComponent makeTextPanel(String string) {
+    return null;
   }
 }
