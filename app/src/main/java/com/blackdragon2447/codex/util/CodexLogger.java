@@ -12,6 +12,6 @@ public class CodexLogger {
   }
 
   public static void log(Throwable thrown) {
-    DEBUG_LOGGER.log(Level.WARNING, "An expeption has occured", thrown);
+    DEBUG_LOGGER.log(Level.WARNING, "An exception has occured", thrown);
   }
 }
