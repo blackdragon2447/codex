@@ -20,21 +20,22 @@ public class App {
 
     CodexLogger.log("Done initializing database", Level.INFO);
 
-    CodexLogger.log("Gonnan do some Query testing", Level.INFO);
+    // CodexLogger.log("Gonnan do some Query testing", Level.INFO);
 
-    System.out.println(
-        new Query.Select("*", "Employee")
-            .whereValueIn("location", "Seattle", "Austin", "New York")
-            .assemble());
+    // System.out.println(
+    //     new Query.Select("*", "Employee")
+    //         .whereValueIn("location", "Seattle", "Austin", "New York")
+    //         .assemble());
+    //
+    // System.out.println(new Query.Select("*", "Employee")
+    //                        .whereGreaterThan("employee_id", "110")
+    //                        .whereGreaterThanOrEqual("salary", "10000")
+    //                        .assemble());
+    //
+    // CodexLogger.log("Done testing", Level.INFO);
 
-    System.out.println(new Query.Select("*", "Employee")
-                           .whereGreaterThan("employee_id", "110")
-                           .whereGreaterThanOrEqual("salary", "10000")
-                           .assemble());
+    CodexLogger.log("Starting gui", Level.INFO);
 
-    CodexLogger.log("Done testing", Level.INFO);
-
-    // CodexGui.start();
+    CodexGui.start();
   }
-  Boolean Logic = true;
 }
