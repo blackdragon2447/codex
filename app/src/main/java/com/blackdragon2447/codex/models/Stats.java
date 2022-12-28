@@ -6,7 +6,7 @@ public enum Stats {
 	
 	;
 	
-	public final class StatModifier implements AttributeEffect {
+	public final record StatModifier() implements AttributeEffect {
 		
 	}
 }

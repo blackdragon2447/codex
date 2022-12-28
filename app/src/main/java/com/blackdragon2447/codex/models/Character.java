@@ -1,36 +1,55 @@
 package com.blackdragon2447.codex.models;
 
-import java.util.HashMap;
-
 import com.blackdragon2447.codex.util.Pair;
+
+import java.util.HashMap;
 
 public class Character {
 
-  final Race race;
-  final HinderanceHolder hinderances;
-  Attributes attributes;
-  HashMap<Skills, Pair<Dice, Integer>> skills;
+    String name;
+    final Race race;
+    final HindranceHolder hindrances;
+    Attributes attributes;
+    int pace;
+    int parry;
+    int toughness;
 
-  public Character() {
-    this.race = null;
-    this.hinderances = null;
-  }
+    //? Size
+    HashMap<Skills, Pair<Dice, Integer>> skills;
 
-  public class Attributes {
+    public Character(String name, Attributes attributes, Race race) {
+        this.name = name;
+        this.race = race;
+        this.hindrances = new HindranceHolder();
+    }
 
-    Dice agilityDie = Dice.D4;
-    int agilityModifier = 0;
+    public Character addHindrance(Hindrance hindrance) {
 
-    Dice smartsDie = Dice.D4;
-    int smartsModifier = 0;
+        try {
+            this.hindrances.addHindrance(hindrance);
+        } catch (HindranceHolder.OutOfPointsException ignored) {
 
-    Dice spiritDie = Dice.D4;
-    int spiritModifier = 0;
+        }
 
-    Dice strengthDie = Dice.D4;
-    int strengthModifier = 0;
+        return this;
+    }
 
-    Dice vigorDie = Dice.D4;
-    int vigorModifier = 0;
-  }
+    public record Attributes(
+
+            Dice agilityDie,
+            int agilityModifier,
+
+            Dice smartsDie,
+            int smartsModifier,
+
+            Dice spiritDie,
+            int spiritModifier,
+
+            Dice strengthDie,
+            int strengthModifier,
+
+            Dice vigorDie,
+            int vigorModifier
+    ) {
+    }
 }

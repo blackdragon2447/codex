@@ -1,10 +1,11 @@
 package com.blackdragon2447.codex.database;
 
-import com.blackdragon2447.codex.util.CodexLogger;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Level;
+
+import com.blackdragon2447.codex.App;
 import net.harawata.appdirs.AppDirsFactory;
 
 public class Database {
@@ -22,9 +23,10 @@ public class Database {
 
       connection = DriverManager.getConnection(databaseUrl);
 
+      initialized = true;
+
     } else {
-      CodexLogger.log("The database has already been initialized",
-                      Level.WARNING);
+        App.DEBUG_LOGGER.log(Level.WARNING, "The database has already been initialized");
     }
   }
 }

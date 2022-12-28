@@ -1,6 +1,6 @@
 package com.blackdragon2447.codex.models;
 
-enum Dice {
+public enum Dice {
   D4,
   D6,
   D8,

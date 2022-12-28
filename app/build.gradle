@@ -17,9 +17,10 @@ repositories {
 }
 
 dependencies {
-  implementation 'com.formdev:flatlaf:2.4'
-  implementation 'net.harawata:appdirs:1.2.1'
-  implementation 'com.h2database:h2:2.1.214'
+    implementation 'com.formdev:flatlaf:2.4'
+    implementation 'net.harawata:appdirs:1.2.1'
+    implementation 'com.h2database:h2:2.1.214'
+    implementation 'org.immutables:gson:2.9.3'
 }
 
 application {

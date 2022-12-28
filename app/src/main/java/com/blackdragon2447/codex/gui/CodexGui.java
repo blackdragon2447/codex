@@ -1,8 +1,9 @@
 package com.blackdragon2447.codex.gui;
 
-import com.blackdragon2447.codex.util.CodexLogger;
+import com.blackdragon2447.codex.App;
 import com.blackdragon2447.codex.util.Themes;
 import java.awt.Color;
+import java.util.logging.Level;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -30,7 +31,7 @@ public class CodexGui extends JFrame {
     try {
       new CodexGui();
     } catch (Exception e) {
-      CodexLogger.log(e);
+        App.DEBUG_LOGGER.log(Level.SEVERE, "", e);
     }
   }
 
