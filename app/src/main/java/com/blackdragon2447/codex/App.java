@@ -1,13 +1,14 @@
 package com.blackdragon2447.codex;
 
 import com.blackdragon2447.codex.database.Database;
-import com.blackdragon2447.codex.models.Character;
-import com.blackdragon2447.codex.models.Dice;
+import com.blackdragon2447.codex.database.Query;
+import com.blackdragon2447.codex.gui.CodexGui;
 import com.blackdragon2447.codex.models.Hindrance;
-import com.blackdragon2447.codex.models.Race;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,6 +18,8 @@ public class App {
 
     public static void main(String[] args) {
         DEBUG_LOGGER.log(Level.INFO, "Starting Codex");
+
+        DEBUG_LOGGER.log(Level.INFO, "Initializing database");
 
         try {
             Database.initialize();
@@ -41,44 +44,48 @@ public class App {
         //
         // CodexLogger.log("Done testing", Level.INFO);
 
-        DEBUG_LOGGER.log(Level.INFO, "Testing Characters");
+        // DEBUG_LOGGER.log(Level.INFO, "Testing Characters");
+        //
+        // Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
+        //
+        // var character = new Character(
+        //         "Test Character",
+        //         new Character.Attributes(
+        //                 Dice.D8, 0,
+        //                 Dice.D6, 0,
+        //                 Dice.D6, 0,
+        //                 Dice.D6, 0,
+        //                 Dice.D6, 0
+        //         ),
+        //         new Race(
+        //                 "Android",
+        //                 "Lorem Ipsum",
+        //                 new Race.Attribute("Pacifist", "Lorem Ipsum"),
+        //                 new Race.Attribute("Construct", "Lorem Ipsum"),
+        //                 new Race.Attribute("Outsider", "Lorem Ipsum"),
+        //                 new Race.Attribute("Vow", "Lorem Ipsum")
+        //         )
+        // )
+        //         .addHindrance(
+        //                 new Hindrance("Pacifist", "Lorem Ipsum", Hindrance.HindranceType.MAYOR)
+        //         )
+        //         .addHindrance(
+        //                 new Hindrance("Can't Swim", "Lorem Ipsum", Hindrance.HindranceType.MINOR)
+        //         )
+        //         .addHindrance(
+        //                 new Hindrance("Vow", "Lorem Ipsum", Hindrance.HindranceType.MINOR)
+        //         );
+        //
+        // System.out.println(gson.toJson(character));
+        //
+        //
+        // DEBUG_LOGGER.log(Level.INFO, "Done testing Characters");
 
-        Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
-
-        var character = new Character(
-                "Test Character",
-                new Character.Attributes(
-                        Dice.D8, 0,
-                        Dice.D6, 0,
-                        Dice.D6, 0,
-                        Dice.D6, 0,
-                        Dice.D6, 0
-                ),
-                new Race(
-                        "Android",
-                        "Lorem Ipsum",
-                        new Race.Attribute("Pacifist", "Lorem Ipsum"),
-                        new Race.Attribute("Construct", "Lorem Ipsum"),
-                        new Race.Attribute("Outsider", "Lorem Ipsum"),
-                        new Race.Attribute("Vow", "Lorem Ipsum")
-                )
-        )
-                .addHindrance(
-                        new Hindrance("Pacifist", "Lorem Ipsum", Hindrance.HindranceType.MAYOR)
-                )
-                .addHindrance(
-                        new Hindrance("Can't Swim", "Lorem Ipsum", Hindrance.HindranceType.MINOR)
-                )
-                .addHindrance(
-                        new Hindrance("Vow", "Lorem Ipsum", Hindrance.HindranceType.MINOR)
-                );
-
-        System.out.println(gson.toJson(character));
+        // Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
+        // System.out.println(gson.toJson(new Hindrance("Test", "Lorem Ipsum", Hindrance.HindranceType.MINOR)));
 
 
-        DEBUG_LOGGER.log(Level.INFO, "Done testing Characters");
-
-        // CodexGui.start();
+        CodexGui.start();
     }
 
 }
