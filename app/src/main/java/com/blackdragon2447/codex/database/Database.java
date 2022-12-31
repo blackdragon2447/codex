@@ -36,6 +36,11 @@ public class Database {
         }
     }
 
+    public static boolean execute(String query) throws SQLException {
+        Statement statement = connection.createStatement();
+         return statement.execute(query);
+    }
+
     public static <T> List<T> query(String query, Class<T> type) throws SQLException, IOException {
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(query);
