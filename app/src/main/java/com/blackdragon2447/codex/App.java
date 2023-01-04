@@ -1,14 +1,13 @@
 package com.blackdragon2447.codex;
 
 import com.blackdragon2447.codex.database.Database;
-import com.blackdragon2447.codex.database.Query;
 import com.blackdragon2447.codex.gui.CodexGui;
-import com.blackdragon2447.codex.models.Hindrance;
+import com.blackdragon2447.codex.models.Edge;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.io.IOException;
-import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -80,10 +79,6 @@ public class App {
         //
         //
         // DEBUG_LOGGER.log(Level.INFO, "Done testing Characters");
-
-        // Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
-        // System.out.println(gson.toJson(new Hindrance("Test", "Lorem Ipsum", Hindrance.HindranceType.MINOR)));
-
 
         CodexGui.start();
     }

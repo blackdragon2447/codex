@@ -20,10 +20,10 @@ public class CodexGui extends JFrame {
     static GridBagLayout hindrancesPanelLayout = new GridBagLayout();
     static JTabbedPane pane = new JTabbedPane();
 
-    static JPanel panel1;
+    static RaceTab racePane;
     static HindranceTab hindrancesPane;
 
-    static JPanel panel3;
+    static EdgeTab edgesPane;
 
     public static void start() {
 
@@ -67,16 +67,16 @@ public class CodexGui extends JFrame {
         fileMenu.add(settingsMenuItem);
         settingsMenuItem.addActionListener((e) -> System.out.println("Clicked"));
 
-        panel1 = new JPanel();
-        pane.addTab("Tab1", panel1);
+        racePane = new RaceTab();
+        pane.addTab("Races", racePane);
 
         hindrancesPane = new HindranceTab();
 
         pane.addTab("Hindrances", hindrancesPane);
 
 
-        panel3 = new JPanel();
-        pane.addTab("Tab3", panel3);
+        edgesPane = new EdgeTab();
+        pane.addTab("Edges", edgesPane);
 
         add(pane);
 
