@@ -2,6 +2,7 @@ package com.blackdragon2447.codex.gui;
 
 import com.blackdragon2447.codex.App;
 import com.blackdragon2447.codex.database.Database;
+import com.blackdragon2447.codex.database.HibernateUtil;
 import com.blackdragon2447.codex.database.Query;
 import com.blackdragon2447.codex.models.Hindrance;
 import com.blackdragon2447.codex.util.Themes;
@@ -10,6 +11,8 @@ import com.google.gson.GsonBuilder;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -79,6 +82,13 @@ public class CodexGui extends JFrame {
         pane.addTab("Edges", edgesPane);
 
         add(pane);
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                HibernateUtil.getSessionJavaConfigFactory().close();
+            }
+        });
 
         setVisible(true);
     }

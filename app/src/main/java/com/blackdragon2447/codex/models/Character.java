@@ -7,15 +7,19 @@ import java.util.HashMap;
 public class Character {
 
     String name;
-    final Race race;
-    final HindranceHolder hindrances;
+    Race race;
+    HindranceHolder hindrances;
     Attributes attributes;
     int pace;
     int parry;
     int toughness;
 
     //? Size
-    HashMap<Skills, Pair<Dice, Integer>> skills;
+    HashMap<String, Pair<Dice, Integer>> skills;
+
+    protected Character() {
+
+    }
 
     public Character(String name, Attributes attributes, Race race) {
         this.name = name;

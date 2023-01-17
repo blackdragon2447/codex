@@ -1,12 +1,17 @@
 package com.blackdragon2447.codex;
 
 import com.blackdragon2447.codex.database.Database;
+import com.blackdragon2447.codex.database.HibernateUtil;
 import com.blackdragon2447.codex.gui.CodexGui;
+import com.blackdragon2447.codex.models.Dice;
 import com.blackdragon2447.codex.models.Edge;
+import com.blackdragon2447.codex.models.Hindrance;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.hibernate.Session;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,6 +19,8 @@ import java.util.logging.Logger;
 public class App {
 
     public static final Logger DEBUG_LOGGER = Logger.getLogger("Codex");
+
+    public static Session databaseSession;
 
     public static void main(String[] args) {
         DEBUG_LOGGER.log(Level.INFO, "Starting Codex");
@@ -80,7 +87,10 @@ public class App {
         //
         // DEBUG_LOGGER.log(Level.INFO, "Done testing Characters");
 
+        databaseSession = HibernateUtil.getSessionJavaConfigFactory().openSession();
+
         CodexGui.start();
+
     }
 
 }

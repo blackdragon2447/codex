@@ -20,6 +20,8 @@ dependencies {
     implementation 'com.formdev:flatlaf:3.0'
     implementation 'net.harawata:appdirs:1.2.1'
     implementation 'com.h2database:h2:2.1.214'
+    implementation 'org.hibernate:hibernate-core:6.1.6.Final'
+    implementation 'javax.persistence:persistence-api:1.0.2'
     implementation 'com.google.code.gson:gson:2.10'
 }
 

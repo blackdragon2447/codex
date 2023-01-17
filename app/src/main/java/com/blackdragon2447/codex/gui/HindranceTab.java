@@ -2,10 +2,12 @@ package com.blackdragon2447.codex.gui;
 
 import com.blackdragon2447.codex.App;
 import com.blackdragon2447.codex.database.Database;
+import com.blackdragon2447.codex.database.HibernateUtil;
 import com.blackdragon2447.codex.database.Query;
 import com.blackdragon2447.codex.models.Hindrance;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.hibernate.Session;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,7 +19,6 @@ public class HindranceTab extends EditorPanel {
 
     java.util.List<Hindrance> hindranceList;
 
-    String oldName;
 
     JTextField nameField = new JTextField();
     JTextArea descriptionField = new JTextArea();
@@ -33,7 +34,6 @@ public class HindranceTab extends EditorPanel {
             Hindrance hindrance = hindranceList.get(list.getSelectedIndex());
 
             nameField.setText(hindrance.name());
-            oldName = hindrance.name();
             descriptionField.setText(hindrance.description());
             typeField.setSelectedIndex(switch (hindrance.type()) {
                 case MAYOR -> 0;
@@ -109,30 +109,23 @@ public class HindranceTab extends EditorPanel {
 
         saveButton.addActionListener((e) -> {
 
-            try {
-                Database.execute(new Query.Delete("HINDRANCES").whereEqual("NAME", oldName).assemble());
-            } catch (SQLException ex) {
-                App.DEBUG_LOGGER.log(Level.WARNING, "", ex);
-                System.exit(1);
-            }
+            Hindrance hindrance = new Hindrance(nameField.getText(), descriptionField.getText(), switch (typeField.getSelectedIndex()) {
+                case 0 -> Hindrance.HindranceType.MAYOR;
+                case 1 -> Hindrance.HindranceType.MINOR;
+                default -> throw new IllegalStateException("Unexpected value: " + typeField.getSelectedIndex());
+            });
 
-            try {
-                Database.execute(new Query.InsertInto("HINDRANCES").addData(nameField.getText(), descriptionField.getText(), switch (typeField.getSelectedIndex()) {
-                    case 0 -> "MAYOR";
-                    case 1 -> "MINOR";
-                    default -> throw new IllegalStateException("Unexpected value: " + typeField.getSelectedIndex());
-                }).assemble());
-            } catch (SQLException ex) {
-                App.DEBUG_LOGGER.log(Level.WARNING, "", ex);
-                System.exit(1);
-            }
+            hindrance.setId(hindranceList.get(list.getSelectedIndex()).getId());
+
+            App.databaseSession.beginTransaction();
+            App.databaseSession.merge(hindrance);
+            App.databaseSession.getTransaction().commit();
 
             updateList();
 
         });
 
         nameField.setText(hindranceList.get(0).name());
-        oldName = hindranceList.get(0).name();
         descriptionField.setText(hindranceList.get(0).description());
         typeField.setSelectedIndex(switch (hindranceList.get(0).type()) {
             case MAYOR -> 0;
@@ -146,18 +139,12 @@ public class HindranceTab extends EditorPanel {
 
         DefaultListModel<String> listModel = new DefaultListModel<String>();
 
-        try {
-            hindranceList = Database.query(new Query.Select("*", "HINDRANCES").assemble(), Hindrance.class);
+        App.databaseSession.beginTransaction();
+        hindranceList = HibernateUtil.loadAllData(Hindrance.class, App.databaseSession);
+        App.databaseSession.getTransaction().commit();
 
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
-            for (var r : hindranceList) {
-                listModel.addElement(r.name());
-            }
-
-        } catch (SQLException | IOException e) {
-            App.DEBUG_LOGGER.log(Level.WARNING, "", e);
-            System.exit(1);
+        for (var r : hindranceList) {
+            listModel.addElement(r.name());
         }
 
         return listModel;

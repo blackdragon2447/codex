@@ -4,7 +4,6 @@ import com.blackdragon2447.codex.App;
 import com.blackdragon2447.codex.database.Database;
 import com.blackdragon2447.codex.database.Query;
 import com.blackdragon2447.codex.models.Edge;
-import com.blackdragon2447.codex.models.Hindrance;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -12,7 +11,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Vector;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 public class EdgeTab extends EditorPanel {
 
@@ -26,7 +28,6 @@ public class EdgeTab extends EditorPanel {
 
     JButton saveButton = new JButton("Save");
 
-    String oldName;
 
     EdgeTab() {
         super();
@@ -36,8 +37,7 @@ public class EdgeTab extends EditorPanel {
             Edge edge = edgeList.get(list.getSelectedIndex());
 
             nameField.setText(edge.name());
-            oldName = edge.name();
-            requirementsField.setText(edge.requirements());
+            requirementsField.setText(String.join(", ", edge.requirements()));
             descriptionField.setText(edge.description());
         });
 
@@ -63,7 +63,7 @@ public class EdgeTab extends EditorPanel {
 
         JLabel typeLabel = new JLabel("Requirements");
         c.weightx = 0.3;
-        c.weighty = 0;
+        c.weighty = 0.0;
         c.gridx = 0;
         c.gridy = 1;
         c.anchor = GridBagConstraints.FIRST_LINE_END;
@@ -108,19 +108,13 @@ public class EdgeTab extends EditorPanel {
 
         saveButton.addActionListener((e) -> {
 
-            try {
-                Database.execute(new Query.Delete("EDGES").whereEqual("NAME", oldName).assemble());
-            } catch (SQLException ex) {
-                App.DEBUG_LOGGER.log(Level.WARNING, "", ex);
-                System.exit(1);
-            }
+            Edge edge = new Edge(nameField.getText(), Arrays.stream(requirementsField.getText().split(", ")).toList(), descriptionField.getText());
 
-            try {
-                Database.execute(new Query.InsertInto("EDGES").addData(nameField.getText(), requirementsField.getText(), descriptionField.getText()).assemble());
-            } catch (SQLException ex) {
-                App.DEBUG_LOGGER.log(Level.WARNING, "", ex);
-                System.exit(1);
-            }
+            edge.setId(edgeList.get(list.getSelectedIndex()).getId());
+
+            App.databaseSession.beginTransaction();
+            App.databaseSession.merge(edge);
+            App.databaseSession.getTransaction().commit();
 
             updateList();
 
@@ -128,8 +122,7 @@ public class EdgeTab extends EditorPanel {
 
         try {
             nameField.setText(edgeList.get(0).name());
-            oldName = edgeList.get(0).name();
-            requirementsField.setText(edgeList.get(0).requirements());
+            requirementsField.setText(String.join(", ", edgeList.get(0).requirements()));
             descriptionField.setText(edgeList.get(0).description());
         } catch (IndexOutOfBoundsException ignored) {
 
@@ -156,5 +149,15 @@ public class EdgeTab extends EditorPanel {
         }
 
         return listModel;
+    }
+
+    private Vector<Vector<String>> strArray2Vector(String[] str) {
+        Vector<Vector<String>> vector = new Vector<>();
+        for (String s : str) {
+            Vector<String> v = new Vector<>();
+            v.addElement(s);
+            vector.addElement(v);
+        }
+        return vector;
     }
 }
