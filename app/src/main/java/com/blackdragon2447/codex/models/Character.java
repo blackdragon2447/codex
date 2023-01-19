@@ -2,58 +2,56 @@ package com.blackdragon2447.codex.models;
 
 import com.blackdragon2447.codex.util.Pair;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Character {
+public class Character implements Serializable {
 
-    String name;
-    Race race;
-    HindranceHolder hindrances;
-    Attributes attributes;
-    int pace;
-    int parry;
-    int toughness;
+    private int id;
+    private String name;
+    private Race race;
 
-    //? Size
-    HashMap<String, Pair<Dice, Integer>> skills;
+    private int pace;
+    private int parry;
+    private int size;
+    private int toughness;
 
-    protected Character() {
+    private int wounds;
+    private int fatigue;
+    private boolean incapacitated;
+
+    private Attribute agilityAttr;
+    private Attribute smartsAttr;
+    private Attribute spiritAttr;
+    private Attribute strengthAttr;
+    private Attribute vigorAttr;
+
+    private Skill athleticsSkill;
+    private Skill commonKnowledgeSkill;
+    private Skill noticeSkill;
+    private Skill persuasionSkill;
+    private Skill stealthSkill;
+    private HashMap<String, Skill> skills;
+
+    private ArrayList<Edge> edges;
+    private int advances;
+
+    public void update() {
 
     }
 
-    public Character(String name, Attributes attributes, Race race) {
-        this.name = name;
-        this.race = race;
-        this.hindrances = new HindranceHolder();
+    public Rank getRank() {
+        if (this.advances <= 3)
+            return Rank.NOVICE;
+        else if (this.advances <= 7)
+            return Rank.SEASONED;
+        else if (this.advances <= 11)
+            return Rank.VETERAN;
+        else if (this.advances <= 15)
+            return Rank.HEROIC;
+        else
+            return Rank.LEGENDARY;
     }
 
-    public Character addHindrance(Hindrance hindrance) {
-
-        try {
-            this.hindrances.addHindrance(hindrance);
-        } catch (HindranceHolder.OutOfPointsException ignored) {
-
-        }
-
-        return this;
-    }
-
-    public record Attributes(
-
-            Dice agilityDie,
-            int agilityModifier,
-
-            Dice smartsDie,
-            int smartsModifier,
-
-            Dice spiritDie,
-            int spiritModifier,
-
-            Dice strengthDie,
-            int strengthModifier,
-
-            Dice vigorDie,
-            int vigorModifier
-    ) {
-    }
 }
