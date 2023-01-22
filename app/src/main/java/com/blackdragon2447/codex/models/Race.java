@@ -1,5 +1,16 @@
 package com.blackdragon2447.codex.models;
 
-public record Race(String name, String description, String atributes){
+import java.io.Serializable;
+import java.util.HashMap;
 
-};
+public class Race implements Serializable {
+
+    private String name;
+    private String description;
+    private HashMap<String, RaceAttribute> attributes;
+
+    public HashMap<String, RaceAttribute> getAttributes() {
+        return attributes;
+    }
+
+}
