@@ -25,4 +25,20 @@ public class Attribute implements Serializable {
         }
     }
 
+    public Die getDie() {
+        return die;
+    }
+
+    public int getBonus() {
+        return bonus;
+    }
+
+    public void setDie(Die die) {
+        this.die = die;
+    }
+
+    public void setBonus(int bonus) {
+        this.bonus = bonus;
+    }
+
 }

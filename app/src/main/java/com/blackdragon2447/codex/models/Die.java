@@ -25,4 +25,20 @@ public enum Die {
         };
     }
 
+    public boolean greaterThan(Die other) {
+        return switch (this) {
+            case D4 -> false;
+            case D6 -> other == Die.D4;
+            case D8 -> other == Die.D6 || !other.greaterThan(Die.D6);
+            case D10 -> other == Die.D8 || !other.greaterThan(Die.D8);
+            case D12 -> other == Die.D10 || !other.greaterThan(Die.D10);
+            case D20 -> other == Die.D12 || !other.greaterThan(Die.D12);
+            default -> throw new IllegalArgumentException("Unexpected value: " + this);
+        };
+    }
+
+    public boolean lessThan(Die other) {
+        return !this.greaterThan(other);
+    }
+
 }

@@ -15,17 +15,41 @@ public abstract sealed class RaceAttribute implements
 
         private String skill; // must be one of pace, parry, size or toughness
         private int modifier;
+
+        public String getSkill() {
+            return skill;
+        }
+
+        public int getModifier() {
+            return modifier;
+        }
     }
 
     public final class SkillRaceAttribute extends RaceAttribute {
         private String skill;
         private int modifier;
+
+        public String getSkill() {
+            return skill;
+        }
+
+        public int getModifier() {
+            return modifier;
+        }
     }
 
     public final class AttributeRaceAttribute extends RaceAttribute {
 
         private String attribute;
         private int modifier;
+
+        public String getAttribute() {
+            return attribute;
+        }
+
+        public int getModifier() {
+            return modifier;
+        }
 
     }
 

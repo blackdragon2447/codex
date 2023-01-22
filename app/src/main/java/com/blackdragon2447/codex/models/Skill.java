@@ -8,6 +8,10 @@ public class Skill implements Serializable {
     private Die die = Die.D4;
     private int bonus = 0;
 
+    public Skill(Attribute linkedAttribute) {
+        this.linkedAttribute = linkedAttribute;
+    }
+
     public void increase() {
 
         switch (this.die) {

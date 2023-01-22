@@ -9,4 +9,8 @@ public class Race implements Serializable {
     private String description;
     private HashMap<String, RaceAttribute> attributes;
 
+    public HashMap<String, RaceAttribute> getAttributes() {
+        return attributes;
+    }
+
 }
