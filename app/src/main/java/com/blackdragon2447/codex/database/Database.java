@@ -31,6 +31,18 @@ public class Database {
                 initialized = true;
             }
 
+            new Thread(){
+                @Override
+                public void run() {
+                    try {
+                        Database.save();
+                        sleep(60_000);
+                    } catch (IOException | InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }.start();
+
 
         } else {
             App.DEBUG_LOGGER.log(Level.WARNING, "The database has already been initialized");

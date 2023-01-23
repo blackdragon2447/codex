@@ -25,7 +25,6 @@ public enum Die {
         };
     }
 
-    //TODO: Check if this impl is sound.
     public boolean greaterThan(Die other) {
         return switch (this) {
             case D4 -> false;
