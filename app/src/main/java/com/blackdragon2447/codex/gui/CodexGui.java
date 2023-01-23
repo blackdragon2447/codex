@@ -2,19 +2,13 @@ package com.blackdragon2447.codex.gui;
 
 import com.blackdragon2447.codex.App;
 import com.blackdragon2447.codex.database.Database;
-import com.blackdragon2447.codex.database.HibernateUtil;
-import com.blackdragon2447.codex.database.Query;
-import com.blackdragon2447.codex.models.Hindrance;
 import com.blackdragon2447.codex.util.Themes;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.logging.Level;
 
 public class CodexGui extends JFrame {
@@ -23,10 +17,10 @@ public class CodexGui extends JFrame {
     static GridBagLayout hindrancesPanelLayout = new GridBagLayout();
     static JTabbedPane pane = new JTabbedPane();
 
-    static RaceTab racePane;
-    static HindranceTab hindrancesPane;
+    //static RaceTab racePane;
+    //static HindranceTab hindrancesPane;
 
-    static EdgeTab edgesPane;
+    //static EdgeTab edgesPane;
 
     public static void start() {
 
@@ -70,23 +64,26 @@ public class CodexGui extends JFrame {
         fileMenu.add(settingsMenuItem);
         settingsMenuItem.addActionListener((e) -> System.out.println("Clicked"));
 
-        racePane = new RaceTab();
-        pane.addTab("Races", racePane);
+        //racePane = new RaceTab();
+        //pane.addTab("Races", racePane);
 
-        hindrancesPane = new HindranceTab();
+        //hindrancesPane = new HindranceTab();
+        //pane.addTab("Hindrances", hindrancesPane);
 
-        pane.addTab("Hindrances", hindrancesPane);
 
-
-        edgesPane = new EdgeTab();
-        pane.addTab("Edges", edgesPane);
+        //edgesPane = new EdgeTab();
+        //pane.addTab("Edges", edgesPane);
 
         add(pane);
 
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                HibernateUtil.getSessionJavaConfigFactory().close();
+                try {
+                    Database.save();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
 

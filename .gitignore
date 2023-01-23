@@ -11,6 +11,8 @@ notes
 .idea/
 .metadata/
 
+.vscode/
+
 app/bin/
 app/build/
 

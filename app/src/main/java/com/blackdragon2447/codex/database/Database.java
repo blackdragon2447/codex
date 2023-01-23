@@ -1,72 +1,79 @@
 package com.blackdragon2447.codex.database;
 
 import com.blackdragon2447.codex.App;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.stream.JsonWriter;
+import com.blackdragon2447.codex.util.Pair;
 import net.harawata.appdirs.AppDirsFactory;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.*;
+import java.util.HashMap;
 import java.util.logging.Level;
 
 public class Database {
 
     private static boolean initialized = false;
-    private static Connection connection = null;
 
-    public static void initialize() throws SQLException {
+    private static HashMap<String, Pair<Class<?>, Object>> storage;
 
+    public static void load() throws IOException, ClassNotFoundException {
         if (!initialized) {
 
             String path =
-                    AppDirsFactory.getInstance().getUserDataDir("codex", "", "");
-            String databaseUrl = "jdbc:h2:" + path + "codex";
+                    AppDirsFactory.getInstance().getUserDataDir("codex", "", "") + "codex.db";
 
-            connection = DriverManager.getConnection(databaseUrl);
+            if(!new File(path).exists()) {
+                storage = new HashMap<>();
+                initialized = true;
+                save();
+            } else {
+                ObjectInputStream input = new ObjectInputStream(new FileInputStream(path));
+                storage = (HashMap<String, Pair<Class<?>, Object>>) input.readObject();
+                input.close();
+                initialized = true;
+            }
 
-            initialized = true;
 
         } else {
             App.DEBUG_LOGGER.log(Level.WARNING, "The database has already been initialized");
         }
     }
 
-    public static boolean execute(String query) throws SQLException {
-        Statement statement = connection.createStatement();
-         return statement.execute(query);
-    }
+    public static void save() throws IOException {
 
-    public static <T> List<T> query(String query, Class<T> type) throws SQLException, IOException {
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery(query);
-        ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
+        if(initialized) {
 
-        List<T> list = new ArrayList<>();
+            String path =
+                    AppDirsFactory.getInstance().getUserDataDir("codex", "", "") + "codex.db";
 
-        while (resultSet.next()) {
-            StringWriter stringWriter = new StringWriter();
-            JsonWriter writer = new JsonWriter(new BufferedWriter(stringWriter));
-
-            writer.beginObject();
-            for (int i = 1; i <= resultSetMetaData.getColumnCount(); i++) {
-                writer.name(resultSetMetaData.getColumnLabel(i).toLowerCase());
-                writer.value(resultSet.getString(i));
-            }
-            writer.endObject();
-
-            writer.close();
-
-            Gson gson = new GsonBuilder().create();
-            list.add(gson.fromJson(stringWriter.toString(), type));
+            ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(path));
+            output.writeObject(storage);
+            output.close();
+        } else {
+            App.DEBUG_LOGGER.log(Level.WARNING, "The database has not yet been initialized");
+            throw new RuntimeException("The database has not yet been initialized");
         }
-
-        return list;
-
     }
+
+    public static <T> T getObject(String id, Class<T> klass) {
+        if(initialized) {
+            if (storage.get(id).getA() == klass) {
+                return (T) storage.get(id).getB();
+            } else {
+                throw new RuntimeException("The item with key `" + id + "` is not of type " + klass);
+            }
+        } else {
+            App.DEBUG_LOGGER.log(Level.WARNING, "The database has not yet been initialized");
+            throw new RuntimeException("The database has not yet been initialized");
+        }
+    }
+
+    public static <T> void putObject(String id, T object) {
+        if(initialized) {
+            storage.put(id, new Pair<>(object.getClass(), object));
+        } else {
+            App.DEBUG_LOGGER.log(Level.WARNING, "The database has not yet been initialized");
+            throw new RuntimeException("The database has not yet been initialized");
+        }
+    }
+
 
 }
