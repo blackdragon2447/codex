@@ -195,7 +195,7 @@ public class Character implements Serializable {
     }
 
     public void update() {
-        if (wounds > 2 || fatigue > 2)
+        if (wounds > 3 || fatigue > 2)
             this.incapacitated = true;
     }
 
