@@ -12,6 +12,11 @@ public class Skill implements Serializable {
         this.linkedAttribute = linkedAttribute;
     }
 
+    /**
+     * Increases the dietype of this
+     * {@link com.blackdragon2447.codex.models.Skill} up until D20, any more
+     * will increase the bonus
+     */
     public void increase() {
 
         switch (this.die) {

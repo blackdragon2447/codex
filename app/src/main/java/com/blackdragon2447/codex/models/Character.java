@@ -71,50 +71,84 @@ public class Character implements Serializable {
         this.advances = 0;
     }
 
+    /**
+     * Tries to increase the characters agility stat, will not increase above the
+     * limit (by default 1d12 + 0)
+     *
+     * @return indicates if the increase was successfull
+     */
     public boolean increaceAgility() {
 
         if ((agilityAttr.getDie().lessThan(Die.D12) && agilityAttrMax == 0)
                 || agilityAttr.getBonus() < agilityAttrMax) {
             agilityAttr.increase();
+            return true;
         }
 
         return false;
 
     }
 
+    /**
+     * Tries to increase the characters smarts stat, will not increase above the
+     * limit (by default 1d12 + 0)
+     *
+     * @return indicates if the increase was successfull
+     */
     public boolean increaceSmarts() {
 
         if ((smartsAttr.getDie().lessThan(Die.D12) && smartsAttrMax == 0)
                 || smartsAttr.getBonus() < smartsAttrMax) {
             smartsAttr.increase();
+            return true;
         }
 
         return false;
 
     }
 
+    /**
+     * Tries to increase the characters spirit stat, will not increase above the
+     * limit (by default 1d12 + 0)
+     *
+     * @return indicates if the increase was successfull
+     */
     public boolean increaceSpirit() {
 
         if ((spiritAttr.getDie().lessThan(Die.D12) && spiritAttrMax == 0)
                 || spiritAttr.getBonus() < spiritAttrMax) {
             spiritAttr.increase();
+            return true;
         }
 
         return false;
 
     }
 
+    /**
+     * Tries to increase the characters strength stat, will not increase above the
+     * limit (by default 1d12 + 0)
+     *
+     * @return indicates if the increase was successfull
+     */
     public boolean increaceStrength() {
 
         if ((strengthAttr.getDie().lessThan(Die.D12) && strengthAttrMax == 0)
                 || strengthAttr.getBonus() < strengthAttrMax) {
             strengthAttr.increase();
+            return true;
         }
 
         return false;
 
     }
 
+    /**
+     * Tries to increase the characters vigor stat, will not increase above the
+     * limit (by default 1d12 + 0)
+     *
+     * @return indicates if the increase was successfull
+     */
     public boolean increaceVigor() {
 
         if ((vigorAttr.getDie().lessThan(Die.D12) && vigorAttrMax == 0)
@@ -127,6 +161,13 @@ public class Character implements Serializable {
 
     }
 
+    /**
+     * Tries to add a edge to the character, currently it wil always be successfull
+     * since requirements arent checked
+     *
+     * @param edge
+     * @return indicates if the edge could be added, currently always true
+     */
     public boolean addEdge(Edge edge) {
 
         if (true) { // check requirement
@@ -138,49 +179,69 @@ public class Character implements Serializable {
 
     }
 
-    public void setRace(Race race) {
-        this.race = race;
+    /**
+     * Sets a characters race, will only succeed of the character does not have a
+     * race yet.
+     *
+     * @param race
+     * @return indicates if the race could be set
+     */
+    public boolean setRace(Race race) {
+        if (this.race == null) {
+            this.race = race;
 
-        for (RaceAttribute attr : race.getAttributes().values()) {
-            if (attr instanceof DerivedRaceAttribute derAttr) {
-                switch (derAttr.getSkill()) {
-                    case "pace" -> this.pace += derAttr.getModifier();
-                    case "parry" -> this.parry += derAttr.getModifier();
-                    case "size" -> this.size += derAttr.getModifier();
-                    case "toughness" -> this.toughness += derAttr.getModifier();
-                }
-            } else if (attr instanceof SkillRaceAttribute skillAttr) {
-                switch (skillAttr.getSkill()) {
-                    case "athletics" -> this.athleticsSkill.increase(skillAttr.getModifier());
-                    case "common_knowledge" -> this.commonKnowledgeSkill.increase(skillAttr.getModifier());
-                    case "notice" -> this.noticeSkill.increase(skillAttr.getModifier());
-                    case "persuasion" -> this.persuasionSkill.increase(skillAttr.getModifier());
-                    case "stealth" -> this.stealthSkill.increase(skillAttr.getModifier());
-                    default -> {
-                        if (!skills.containsKey(skillAttr.getSkill())) {
-                            Skill skill = new Skill(null);
-                            skill.increase(skillAttr.getModifier());
-                            skills.put(skillAttr.getSkill(), skill);
-                        } else {
-                            skills.get(skillAttr.getSkill()).increase(skillAttr.getModifier());
+            for (RaceAttribute attr : race.getAttributes().values()) {
+                if (attr instanceof DerivedRaceAttribute derAttr) {
+                    switch (derAttr.getSkill()) {
+                        case "pace" -> this.pace += derAttr.getModifier();
+                        case "parry" -> this.parry += derAttr.getModifier();
+                        case "size" -> this.size += derAttr.getModifier();
+                        case "toughness" -> this.toughness += derAttr.getModifier();
+                    }
+                } else if (attr instanceof SkillRaceAttribute skillAttr) {
+                    switch (skillAttr.getSkill()) {
+                        case "athletics" -> this.athleticsSkill.increase(skillAttr.getModifier());
+                        case "common_knowledge" -> this.commonKnowledgeSkill.increase(skillAttr.getModifier());
+                        case "notice" -> this.noticeSkill.increase(skillAttr.getModifier());
+                        case "persuasion" -> this.persuasionSkill.increase(skillAttr.getModifier());
+                        case "stealth" -> this.stealthSkill.increase(skillAttr.getModifier());
+                        default -> {
+                            if (!skills.containsKey(skillAttr.getSkill())) {
+                                Skill skill = new Skill(null);
+                                skill.increase(skillAttr.getModifier());
+                                skills.put(skillAttr.getSkill(), skill);
+                            } else {
+                                skills.get(skillAttr.getSkill()).increase(skillAttr.getModifier());
+                            }
                         }
                     }
-                }
-            } else if (attr instanceof AttributeRaceAttribute attrAttr) {
-                switch (attrAttr.getAttribute()) {
-                    case "agility" -> this.increaceAgility();
-                    case "smarts" -> this.increaceSmarts();
-                    case "spirit" -> this.increaceSpirit();
-                    case "strength" -> this.increaceStrength();
-                    case "vigor" -> this.increaceVigor();
+                } else if (attr instanceof AttributeRaceAttribute attrAttr) {
+                    switch (attrAttr.getAttribute()) {
+                        case "agility" -> this.increaceAgility();
+                        case "smarts" -> this.increaceSmarts();
+                        case "spirit" -> this.increaceSpirit();
+                        case "strength" -> this.increaceStrength();
+                        case "vigor" -> this.increaceVigor();
+                    }
                 }
             }
+            return true;
+        } else {
+            return false;
         }
 
     }
 
+    /**
+     * Adds a skill which is neither one of the basic skills nor already added.
+     *
+     * @param name
+     * @param skill
+     * @return indicates if the skill was added
+     */
     public boolean addSkill(String name, Skill skill) {
-        if (Arrays.asList(new String[] { "agility", "smarts", "spirit", "strength", "vigor" }).contains(name)
+        if (Arrays.asList(new String[] { "athletics", "common_knowledge", "notice", "persuasion", "stealth" })
+                .contains(name)
                 || this.skills.keySet().contains(name)) {
             return false;
         } else {
@@ -193,11 +254,16 @@ public class Character implements Serializable {
         return race;
     }
 
-    public void update() {
+    private void update() {
         if (wounds > 3 || fatigue > 2)
             this.incapacitated = true;
     }
 
+    /**
+     * Converts a characters advances to a rank
+     *
+     * @return the characters rank
+     */
     public Rank getRank() {
         if (this.advances <= 3)
             return Rank.NOVICE;

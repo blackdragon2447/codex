@@ -14,6 +14,11 @@ import com.blackdragon2447.codex.models.Edge;
 import com.blackdragon2447.codex.models.Race;
 import net.harawata.appdirs.AppDirsFactory;
 
+/**
+ * The {@link Database} class acts as a static interface
+ * between the runtime database contained within it
+ * and the rest of the app.
+ */
 public class Database {
 
     private static boolean initialized = false;
@@ -22,6 +27,16 @@ public class Database {
     private static HashMap<String, Edge> edges;
     private static HashMap<String, Race> races;
 
+    /**
+     * Loads the database in case it has not been loaded,
+     * if it has already been loaded it simply prints an
+     * errot message and returns.
+     * 
+     * @throws IOException            when one of the database files does not exist
+     *                                and cannot be created.
+     * @throws ClassNotFoundException if the class of the serialized database is not
+     *                                found, this should never happen
+     */
     public static void load() throws IOException, ClassNotFoundException {
         if (!initialized) {
 
@@ -68,6 +83,12 @@ public class Database {
         }
     }
 
+    /**
+     * Writes the internal database out to disk
+     *
+     * @throws IOException if one or more of the files could not be created or
+     *                     accessed.
+     */
     public static void save() throws IOException {
 
         if (initialized) {
@@ -92,15 +113,67 @@ public class Database {
         }
     }
 
+    /**
+     * @param id the id of the requested
+     *           {@link com.blackdragon2447.codex.models.Character}
+     * @return the requested {@link com.blackdragon2447.codex.models.Character} or
+     *         null if there is no character for the given id.
+     */
     public static Character getCharacter(String id) {
         return characters.get(id);
     }
 
+    /**
+     * @param id the id of the requested
+     *           {@link com.blackdragon2447.codex.models.Edge}
+     * @return the requested {@link com.blackdragon2447.codex.models.Edge} or
+     *         null if there is no edge for the given id.
+     */
     public static Edge getEdge(String id) {
         return edges.get(id);
     }
 
+    /**
+     * @param id the id of the requested
+     *           {@link com.blackdragon2447.codex.models.Race}
+     * @return the requested {@link com.blackdragon2447.codex.models.Race} or
+     *         null if there is no race for the given id.
+     */
     public static Race getRace(String id) {
         return races.get(id);
     }
+
+    /**
+     * @param id        the id of the
+     *                  {@link com.blackdragon2447.codex.models.Character} to put in
+     *                  the database
+     * @param character the {@link com.blackdragon2447.codex.models.Character} to
+     *                  put in the database
+     */
+    public static void putCharacter(String id, Character character) {
+        characters.put(id, character);
+    }
+
+    /**
+     * @param id        the id of the
+     *                  {@link com.blackdragon2447.codex.models.Edge} to put in
+     *                  the database
+     * @param character the {@link com.blackdragon2447.codex.models.Edge} to
+     *                  put in the database
+     */
+    public static void putEdge(String id, Edge edge) {
+        edges.put(id, edge);
+    }
+
+    /**
+     * @param id        the id of the
+     *                  {@link com.blackdragon2447.codex.models.Race} to put in
+     *                  the database
+     * @param character the {@link com.blackdragon2447.codex.models.Race} to
+     *                  put in the database
+     */
+    public static void putRace(String id, Race race) {
+        races.put(id, race);
+    }
+
 }
