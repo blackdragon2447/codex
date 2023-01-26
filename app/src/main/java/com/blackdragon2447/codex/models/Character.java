@@ -1,6 +1,5 @@
 package com.blackdragon2447.codex.models;
 
-import com.blackdragon2447.codex.models.Rank;
 import com.blackdragon2447.codex.models.RaceAttribute.AttributeRaceAttribute;
 import com.blackdragon2447.codex.models.RaceAttribute.DerivedRaceAttribute;
 import com.blackdragon2447.codex.models.RaceAttribute.SkillRaceAttribute;
