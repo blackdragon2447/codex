@@ -66,6 +66,8 @@ public class Database {
                 input.close();
             }
 
+            initialized = true;
+
             new Thread() {
                 @Override
                 public void run() {
