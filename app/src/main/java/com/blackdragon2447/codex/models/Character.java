@@ -11,7 +11,7 @@ import java.util.HashMap;
 
 public class Character implements Serializable {
 
-    private int id;
+    private String systemName;
     private String name;
     private Race race;
 
@@ -252,6 +252,80 @@ public class Character implements Serializable {
 
     public Race getRace() {
         return race;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+        if (this.systemName == null)
+            this.systemName = name.toLowerCase().replace(' ', '_');
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getSystemName() {
+        return systemName;
+    }
+
+    public void setPace(int pace) {
+        this.pace = pace;
+    }
+
+    public int getPace() {
+        return pace;
+    }
+
+    public int getParry() {
+        return parry;
+    }
+
+    public int getToughness() {
+        return toughness;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public Attribute getAgilityAttr() {
+        return agilityAttr;
+    }
+
+    public Attribute getSmartsAttr() {
+        return smartsAttr;
+    }
+
+    public Attribute getSpiritAttr() {
+        return spiritAttr;
+    }
+
+    public Attribute getStrengthAttr() {
+        return strengthAttr;
+    }
+
+    public Attribute getVigorAttr() {
+        return vigorAttr;
+    }
+
+    public Skill getAthleticsSkill() {
+        return athleticsSkill;
+    }
+
+    public Skill getCommonKnowledgeSkill() {
+        return commonKnowledgeSkill;
+    }
+
+    public Skill getNoticeSkill() {
+        return noticeSkill;
+    }
+
+    public Skill getPersuasionSkill() {
+        return persuasionSkill;
+    }
+
+    public Skill getStealthSkill() {
+        return stealthSkill;
     }
 
     private void update() {

@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import com.blackdragon2447.codex.App;
 import com.blackdragon2447.codex.models.Edge;
 import com.blackdragon2447.codex.models.Race;
+import com.blackdragon2447.codex.models.Character;
 import net.harawata.appdirs.AppDirsFactory;
 
 /**
@@ -66,6 +67,15 @@ public class Database {
                 input.close();
             }
 
+            if (characters == null)
+                characters = new HashMap<>();
+
+            if (edges == null)
+                edges = new HashMap<>();
+
+            if (races == null)
+                races = new HashMap<>();
+
             initialized = true;
 
             new Thread() {
@@ -113,6 +123,10 @@ public class Database {
             App.DEBUG_LOGGER.log(Level.WARNING, "The database has not yet been initialized");
             throw new RuntimeException("The database has not yet been initialized");
         }
+    }
+
+    public static HashMap<String, Character> getCharacters() {
+        return characters;
     }
 
     /**
