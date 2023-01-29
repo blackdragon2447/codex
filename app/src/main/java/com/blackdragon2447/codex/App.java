@@ -28,6 +28,9 @@ public class App {
 
         DEBUG_LOGGER.log(Level.INFO, "Done initializing database");
 
+        // We're just building a test character here
+        // ----------------------------------------------------------------------------
+
         Character character = new Character();
         character.setName("Test Character");
 
@@ -48,10 +51,9 @@ public class App {
 
         Database.save();
 
-        // for (Map.Entry<String, Character> c : Database.getCharacters().entrySet()) {
-        // System.out.println(c.getKey());
-        // }
+        // ----------------------------------------------------------------------------
 
+        DEBUG_LOGGER.log(Level.INFO, "Starting Gui");
         CodexGui.start();
     }
 }

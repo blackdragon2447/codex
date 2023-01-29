@@ -11,6 +11,9 @@ public enum Die {
     D12,
     D20;
 
+    /**
+     * @return a random value that could have been rolled with this die
+     */
     public int roll() {
 
         Random random = new Random();

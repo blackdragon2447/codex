@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 public class Character implements Serializable {
 
@@ -326,6 +327,10 @@ public class Character implements Serializable {
 
     public Skill getStealthSkill() {
         return stealthSkill;
+    }
+
+    public HashMap<String, Skill> getSkills() {
+        return skills;
     }
 
     private void update() {

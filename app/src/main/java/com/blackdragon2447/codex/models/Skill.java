@@ -29,6 +29,12 @@ public class Skill implements Serializable {
         }
     }
 
+    /**
+     * Increases the dietype of this
+     * {@link com.blackdragon2447.codex.models.Skill} by `amount` die types up until
+     * D20, any more
+     * will increase the bonus
+     */
     public void increase(int amount) {
         for (int i = 0; i < amount; i++) {
             this.increase();

@@ -43,6 +43,9 @@ public class Database {
 
             String path = AppDirsFactory.getInstance().getUserDataDir("codex", "", "");
 
+            // We check if the file that the database is in exists, if it doesn't we just
+            // create the database as an empty HashMap, else we'll load it.
+
             if (!new File(path + "characters.db").exists()) {
                 characters = new HashMap<>();
             } else {
@@ -67,6 +70,9 @@ public class Database {
                 input.close();
             }
 
+            // There are some cases where the databases might still be null (empty file), in
+            // that case we make them an empty HashMap
+
             if (characters == null)
                 characters = new HashMap<>();
 
@@ -77,6 +83,8 @@ public class Database {
                 races = new HashMap<>();
 
             initialized = true;
+
+            // We create a second thread for autosaving the database every minute
 
             new Thread() {
                 @Override
@@ -106,6 +114,8 @@ public class Database {
         if (initialized) {
 
             String path = AppDirsFactory.getInstance().getUserDataDir("codex", "", "");
+
+            // One by one serialize and write the HashMaps out to disk
 
             ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(path + "characters.db"));
             output.writeObject(characters);

@@ -104,14 +104,13 @@ public class CodexGui extends JFrame {
 
     public CodexGui() {
 
+        // Set a window title, size and layout.
         setTitle("Codex");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setBounds(100, 100, 700, 500);
-
-        // getContentPane().setBackground(Color.DARK_GRAY);
-
         setLayout(layout);
 
+        // Add a menubar (Currently only used for opening characters)
         setJMenuBar(menuBar);
         JMenu fileMenu = new JMenu("Character");
         menuBar.add(fileMenu);
@@ -128,10 +127,13 @@ public class CodexGui extends JFrame {
             openMenu.add(characterItem);
         }
 
+        // Building the left panel
         {
             leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
             Border border = BorderFactory.createMatteBorder(0, 0, 0, 2, Color.BLACK);
             leftPanel.setBorder(border);
+
+            // Building the top section of the left panel
             {
                 infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
 
@@ -157,6 +159,9 @@ public class CodexGui extends JFrame {
                 infoPanel.add(sizeLabel);
 
             }
+
+            // Adding the other buttons to the left panel
+
             infoPanel.setMaximumSize(new Dimension(Short.MAX_VALUE, Short.MAX_VALUE));
             leftPanel.add(infoPanel);
 
@@ -178,12 +183,16 @@ public class CodexGui extends JFrame {
             gearButton.addActionListener((e) -> notYetImplemented());
             leftPanel.add(gearButton);
         }
-
         leftPanel.setPreferredSize(new Dimension(200, 100));
         add(leftPanel, BorderLayout.LINE_START);
 
+        // Setting up the center panel
         {
             centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+
+            // Setting up the innerCenterPanel, which holds the actual components, for an
+            // explaination of the layout used see
+            // (https://docs.oracle.com/javase/tutorial/uiswing/layout/group.html).
             {
                 GroupLayout layout = new GroupLayout(innerCenterPanel);
                 innerCenterPanel.setLayout(layout);
@@ -219,24 +228,20 @@ public class CodexGui extends JFrame {
                                         .addComponent(vigorPanel)));
 
             }
+
+            // Add the inner panel and some spacers
             Dimension minSize = new Dimension(5, 0);
             Dimension prefSize = new Dimension(5, 100);
             Dimension maxSize = new Dimension(100, Short.MAX_VALUE);
-
-            paceSpinner.addChangeListener((c) -> {
-                CodexGui.this.character.setPace((int) paceSpinner.getValue());
-                System.out.println((int) paceSpinner.getValue());
-                CodexGui.this.saveCharacter();
-            });
 
             centerPanel.add(new Box.Filler(minSize, prefSize, maxSize));
             centerPanel.add(innerCenterPanel);
             centerPanel.add(new Box.Filler(minSize, prefSize, maxSize));
 
         }
-        // centerPanel.setBackground(new Color(0, 255, 0));
         add(centerPanel, BorderLayout.CENTER);
 
+        // Setting up the tabs for the right panel
         {
             Border border = BorderFactory.createMatteBorder(0, 2, 0, 0, Color.BLACK);
             rightPanel.setBorder(border);
@@ -250,6 +255,7 @@ public class CodexGui extends JFrame {
         rightPanel.setPreferredSize(new Dimension(310, 100));
         add(rightPanel, BorderLayout.LINE_END);
 
+        // Save and close once the gui closes
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -262,19 +268,26 @@ public class CodexGui extends JFrame {
             }
         });
 
+        // And make the thing visible
         setVisible(true);
     }
 
+    /**
+     * Put the character data that is in `this.character` in the gui
+     */
     private void populate() {
-        this.nameLabel.setText(this.character.getName());
 
+        // Name Race Size
+        this.nameLabel.setText(this.character.getName());
         this.raceLabel.setText("Race: " + this.character.getRace().getName());
         this.sizeLabel.setText("Size: " + this.character.getSize());
 
+        // Pace Parry Toughness
         this.paceSpinner.getModel().setValue(this.character.getPace());
         this.parrySpinner.getModel().setValue(this.character.getParry());
         this.toughnessSpinner.getModel().setValue(this.character.getToughness());
 
+        // Abilites
         this.agilityComboBox.setSelectedItem(this.character.getAgilityAttr().getDie());
         this.agilityBonusSpinner.getModel().setValue(this.character.getAgilityAttr().getBonus());
 
@@ -290,14 +303,21 @@ public class CodexGui extends JFrame {
         this.vigorComboBox.setSelectedItem(this.character.getVigorAttr().getDie());
         this.vigorBonusSpinner.getModel().setValue(this.character.getVigorAttr().getBonus());
 
+        // Clear the skill panel before adding stuff to it.
         this.skillPanel.removeAll();
 
+        // Default skills
         this.skillPanel.add(createSkillPanel("Athletics", this.character.getAthleticsSkill()));
         this.skillPanel.add(createSkillPanel("CommonKnowledge", this.character.getCommonKnowledgeSkill()));
         this.skillPanel.add(createSkillPanel("Notice", this.character.getNoticeSkill()));
         this.skillPanel.add(createSkillPanel("Persuasion", this.character.getPersuasionSkill()));
         this.skillPanel.add(createSkillPanel("Stealth", this.character.getStealthSkill()));
 
+        // The rest
+        for (Map.Entry<String, Skill> s : character.getSkills().entrySet())
+            this.skillPanel.add(createSkillPanel(s.getKey(), s.getValue()));
+
+        // Repaint so the changes are actual visible
         this.getContentPane().revalidate();
         this.getContentPane().repaint();
 
@@ -307,18 +327,11 @@ public class CodexGui extends JFrame {
         JOptionPane.showMessageDialog(this, "Not yet implemented");
     }
 
-    private void saveCharacter() {
-        Database.putCharacter(this.character.getSystemName(), character);
-        try {
-            Database.save();
-        } catch (IOException e) {
-        }
-    }
-
+    /**
+     * Turns a name and a skill into a gui element
+     */
     private JPanel createSkillPanel(String name, Skill skill) {
         JPanel panel = new JPanel();
-
-        // panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 
         panel.add(new JLabel(name), BorderLayout.LINE_START);
 
@@ -334,6 +347,9 @@ public class CodexGui extends JFrame {
 
     }
 
+    /**
+     * Unifies a label, combobox for a die and a bonus spinner into one element.
+     */
     private JPanel createDieCombobox(JLabel nameLabel, JComboBox comboBox, JSpinner bonusSpinner) {
         JPanel panel = new JPanel();
         JPanel innerPanel = new JPanel();
@@ -360,6 +376,9 @@ public class CodexGui extends JFrame {
 
     }
 
+    /**
+     * Unifies a label a spinner into one element.
+     */
     private JPanel createLabeledSpinner(JLabel nameLabel, JSpinner spinner) {
         JPanel panel = new JPanel();
 
