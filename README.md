@@ -26,8 +26,15 @@ als ze nodig zijn.
 ![](./region-20230122-131527.png)
 
 Deze afbeeldingen geven een mooie inkijk in het design van de 
-frontent als de backend, en de verschillen tussen de processen.
+zowel frontent als de backend, en de verschillen tussen de processen.
 Beide processen hebben als uiteindelijke doel om een idee naar 
 code te vertalen, dat kan een tekening zijn van hoe een ui er 
-uit moet komen te zien, of de toch comprexe relaties tusses 
+uit moet komen te zien, of de toch complexe relaties tussen 
 verschillende onderdelen van een character.
+
+
+## Resultaat
+
+![](./region-20230130-102215.png)
+
+Dit is het resultaat, voor hoever het programma af is. 
